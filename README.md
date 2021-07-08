@@ -26,6 +26,5 @@ Simply clone the github projet project.
 ```
 Then open test_1/browser/index.html in your browser. An animation should be displayed.
 
-
 ## Questions ?
 If you have suggestions, plase contact me **jean-christophe.le_lann** at ensta-bretagne dot fr.

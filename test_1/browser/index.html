@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="UTF-8">
+
+  <head>
+    <title>Websocket Client</title>
+  </head>
+
+  <body>
+
+    <svg id="svg_root" width="800" height="600">
+      <circle id="circle_1"  cx="100" cy="200" r=10 fill="blue"  />
+      <circle id="circle_2"  cx="400" cy="100" r=10 />
+      <circle id="circle_3"  cx="400" cy="100" r=10 />
+      <circle id="circle_4"  cx="400" cy="100" r=10 />
+      <circle id="circle_5"  cx="400" cy="100" r=10 />
+      <circle id="circle_6"  cx="400" cy="100" r=10 />
+      <circle id="circle_7"  cx="400" cy="100" r=10 />
+      <circle id="circle_8"  cx="400" cy="100" r=10 />
+      <circle id="circle_9"  cx="400" cy="100" r=10 />
+      <circle id="circle_10" cx="400" cy="100" r=10 />
+      <circle id="circle_11" cx="400" cy="100" r=10 />
+      <rect   id="rect_1"   x="0" y="0" width="30" height="20" fill="blue"/>
+      <rect   id="rect_2"   x="0" y="0" width="50" height="10" fill="orange"/>
+      <rect   id="rect_3"   x="400" y="300" width="60" height="20" fill="purple"/>
+      <rect   id="rect_4"   x="0" y="0" width="60" height="20" fill="dimgrey"/>
+      <rect   id="square_1" x="300" y="200" width="30" height="30" fill="orangered"/>
+      <rect   id="square_2" x="300" y="400" width="50" height="50" fill="blue"/>
+      <text   id="text_1" font-family="Verdana" font-size="55" x="300" y="400" width="50" height="50" fill="blue"> Hello </text>
+      <text   id="text_2" font-family="Verdana" font-size="55" x="300" y="400" width="50" height="50" fill="blue"> Round </text>
+      <text   id="text_3" font-family="Verdana" font-size="55" x="300" y="400" width="50" height="50" fill="blue"> World !</text>
+
+      <g id="arrow" style="stroke: black;">
+        <line x1="60" y1="50" x2="90" y2="50"/>
+        <polygon points="90 50, 85 45, 85 55"/>
+      </g>
+
+    </svg>
+
+    <script>
+      var socket = new WebSocket("ws://localhost:4567");
+      socket.onopen = function (event) {
+          socket.send("js socket 'onopen'");
+      };
+
+      socket.onmessage = function(event) {
+        var msg=event.data
+        console.log("======== msg ==========");
+        var cmds = JSON.parse(msg);
+        for(var i = 0; i < cmds.length; i++) {
+          var cmd = cmds[i];
+          element=document.getElementById(cmd.id);
+          //console.log("element "+element);
+          args=cmd.args
+          switch(cmd.cmd) {
+            case "transform":
+              element.setAttribute("transform",args[0]);
+              break;
+            case "translate":
+              transform=" translate("+args[0]+","+args[1]+")"
+              element.setAttribute("transform",transform);
+              break;
+            case "rotate":
+              bbox = element.getBBox();
+              console.log("bbox:"+bbox);
+              center = {
+                x: bbox.x + bbox.width / 2,
+                y: bbox.y  + bbox.height / 2
+              };
+              console.log("center :"+center.x);
+              transform=" rotate("+args[0]+","+center.x+","+center.y+")"
+              element.setAttribute("transform",transform);
+              break;
+            case "move":
+              console.log("move "+cmd.id);
+              element.setAttribute("cx",args[0]);
+              element.setAttribute("cy",args[1]);
+              break;
+            case "dmove":
+              console.log("dmove "+cmd.id);
+              var cx= + element.getAttribute("cx");
+              var cy= + element.getAttribute("cy");
+              cx+=args[0];
+              cy+=args[1];
+              element.setAttribute("cx",cx);
+              element.setAttribute("cy",cy);
+              break;
+            case "text":
+              console.log("text "+cmd.id);
+              element.setAttribute("x",args[0]);
+              element.setAttribute("y",args[1]);
+              element.setAttribute("font-family" ,args[2]);
+              element.setAttribute("font-size"   ,args[3]);
+              element.setAttribute("stroke-width",args[4]);
+              element.setAttribute("fill"        ,args[5]);
+              break;
+            case "chgcolor":
+              console.log("chgcolor "+cmd.id+" "+args[0]);
+              element.style.fill=args[0];
+              break;
+            default:
+              console.log("unknown cmd "+msg.cmd)
+          }
+        }
+
+
+        // var time = new Date(msg.date);
+        // var timeStr = time.toLocaleTimeString();
+        // json.forEach((item) => {
+        //   console.log('CMD: ' + item.cmd);
+        //   console.log('ID : ' + item.id);
+        //   console.log('ARGS: ' + item.args);
+        // });
+      };
+      // socket.onmessage = function(event) {
+      //   //var f = document.getElementById("chatbox").contentDocument;
+      //   var text = "";
+      //   var msg = JSON.parse(event.data);
+      //   var time = new Date(msg.date);
+      //   var timeStr = time.toLocaleTimeString();
+      //
+      //   switch(msg.type) {
+      //     case "id":
+      //       clientID = msg.id;
+      //       setUsername();
+      //       break;
+      //     case "username":
+      //       text = "<b>User <em>" + msg.name + "</em> signed in at " + timeStr + "</b><br>";
+      //       break;
+      //     case "message":
+      //       text = "(" + timeStr + ") <b>" + msg.name + "</b>: " + msg.text + "<br>";
+      //       break;
+      //     case "rejectusername":
+      //       text = "<b>Your username has been set to <em>" + msg.name + "</em> because the name you chose is in use.</b><br>"
+      //       break;
+      //     case "userlist":
+      //       var ul = "";
+      //       for (i=0; i < msg.users.length; i++) {
+      //         ul += msg.users[i] + "<br>";
+      //       }
+      //       document.getElementById("userlistbox").innerHTML = ul;
+      //       break;
+      //   }
+      //
+      //   if (text.length) {
+      //     f.write(text);
+      //     document.getElementById("chatbox").contentWindow.scrollByPages(1);
+      //   }
+      //};
+    </script>
+  </body>
+
+</html>

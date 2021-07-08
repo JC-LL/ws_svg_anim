@@ -1,0 +1,14 @@
+digraph gcd {
+	size="8,5"
+	node [shape = doublecircle];
+  node [shape = doublecircle]; s0
+	node [shape = circle];
+  s0 -> s0 [label = "/go"]
+	s0 -> s1 [label = "go"];
+  s1 -> s5 [label = "a==b"]
+  s1 -> s2 [label = "a!=b"]
+  s2 -> s3 [label = "a>b"]
+  s2 -> s4 [label = "a<b"]
+  s3 -> s1 ;
+  s4 -> s1 ;
+}

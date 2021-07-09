@@ -15,9 +15,12 @@ loop do
       if message
         puts "Received from js : #{message}"
       end
-      fsm_exec=[1,2,4,5,2,4,5,2,4,5,2,4,5,2,4,6,2,3]
+
+      fsm_exec=[1,2,4,5,2,4,5,2,4,5,2,4,5,2,4,6,2,4,5,2,3]
+
       fsm_exec.each_with_index do |i,idx|
         im1=fsm_exec[idx-1]
+
         rb_msg=[
           {cmd: "chgcolor", id: "node#{i}_ellipse"  , args: ["red"] },
           {cmd: "chgcolor", id: "node#{im1}_ellipse", args: ["white"] }

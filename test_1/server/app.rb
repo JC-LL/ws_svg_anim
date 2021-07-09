@@ -37,7 +37,9 @@ loop do
           {cmd: "rotate"   , id: "arrow"    , args: [deg] },
           {cmd: "text"     , id:"text_1"    , args: [2*y,2*x,font,font_size,stroke_width,color]},
           {cmd: "text"     , id:"text_2"    , args: [2*x,2*y,font,font_size,stroke_width,COLORS.sample]},
-          {cmd: "rotate"   , id:"text_3"    , args: [3*deg]}
+          {cmd: "rotate"   , id:"text_3"    , args: [3*deg]},
+          {cmd: "scale"    , id:"rect_5"    , args: [1+sin(deg)**2]},
+          {cmd: "scale"    , id:"circle_12" , args: [1+sin(deg)**2]},
         ]
         (3..11).each do |c|
           rb_msg << {cmd: "dmove"    , id: "circle_#{c}", args: [rand(-5..5),rand(-5..5)]  }

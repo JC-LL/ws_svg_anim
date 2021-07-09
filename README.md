@@ -10,9 +10,9 @@ Here, I use a simple Ruby websocket server on one side and a simple browser (my 
 ## Contents description
 
 * **Test 1** : where I started playing with the idea. Various commands are prototyped.
-* **Test 2** : animating a finite-state machine.
-* **Test 3** : organizing something more robust (TO COME)
-* **Test 4** : trying to animate external SVG file.
+* **Test 2** : crude (but cheap) animation of a graphviz finite-state machine.
+* **Test 3** : dealing with scale command.
+* **Test 4** : trying to animate external SVG file (TO COME)
 
 ## How to install ?
 
